@@ -21,9 +21,9 @@ describe("standard", () => {
       __dirname + "/1-chronal-calibration.input.txt",
       { encoding: "utf8" }
     );
-    expect(standard(input.split(EOL).map(parseInt))).toMatchInlineSnapshot(
-      `408`
-    );
+    expect(
+      standard(input.split(EOL).map(x => parseInt(x, 10)))
+    ).toMatchInlineSnapshot(`408`);
   });
 });
 
@@ -44,6 +44,8 @@ describe("plus", () => {
       __dirname + "/1-chronal-calibration.input.txt",
       { encoding: "utf8" }
     );
-    expect(plus(input.split(EOL).map(parseInt))).toMatchInlineSnapshot(`55250`);
+    expect(
+      plus(input.split(EOL).map(x => parseInt(x, 10)))
+    ).toMatchInlineSnapshot(`55250`);
   });
 });
