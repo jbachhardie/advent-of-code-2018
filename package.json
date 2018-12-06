@@ -13,6 +13,7 @@
     "prettier": "^1.15.3"
   },
   "dependencies": {
+    "date-fns": "next",
     "ramda": "^0.26.1"
   }
 }
