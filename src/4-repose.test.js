@@ -1,8 +1,8 @@
-const { getInput } = require('./util')
-const { standard, plus } = require('./4-repose')
+const { getInput } = require("./util");
+const { standard, plus } = require("./4-repose");
 
-describe('standard', () => {
-  test.only('counts intersecting points', () => {
+describe("standard", () => {
+  test("counts intersecting points", () => {
     const input = `
 [1518-11-01 00:00] Guard #10 begins shift
 [1518-11-01 00:05] falls asleep
@@ -23,25 +23,25 @@ describe('standard', () => {
 [1518-11-05 00:55] wakes up
     `
       .trim()
-      .split('\n')
-    expect(standard(input)).toBe(240)
-  })
+      .split("\n");
+    expect(standard(input)).toBe(240);
+  });
 
-  test('solves puzzle', async () => {
+  test("solves puzzle", async () => {
     expect(
-      standard(await getInput('4-repose.input.txt'))
-    ).toMatchInlineSnapshot(`105047`)
-  })
-})
+      standard(await getInput("4-repose.input.txt"))
+    ).toMatchInlineSnapshot(`66707`);
+  });
+});
 
-describe('plus', () => {
-  test('finds non-overlapping', () => {
-    expect(plus(['#1 @ 1,3: 4x4', '#2 @ 3,1: 4x4', '#3 @ 5,5: 2x2'])).toBe(3)
-  })
+describe.skip("plus", () => {
+  test("finds non-overlapping", () => {
+    expect(plus(["#1 @ 1,3: 4x4", "#2 @ 3,1: 4x4", "#3 @ 5,5: 2x2"])).toBe(3);
+  });
 
-  test('solves puzzle', async () => {
-    expect(plus(await getInput('4-repose.input.txt'))).toMatchInlineSnapshot(
+  test("solves puzzle", async () => {
+    expect(plus(await getInput("4-repose.input.txt"))).toMatchInlineSnapshot(
       `658`
-    )
-  })
-})
+    );
+  });
+});
