@@ -131,7 +131,6 @@ exports.plus = R.pipe(
   R.addIndex(R.reject)((item, idx, list = []) =>
     R.any(R.partial(overlapping, [item]), R.remove(idx, 1, list))
   ),
-  R.tap(R.map(R.pipe(console.log))),
   R.head,
   R.prop('id')
 );

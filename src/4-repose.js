@@ -1,6 +1,9 @@
 const R = require('ramda');
 const D = require('date-fns/fp');
 
+const log = x =>
+  require('fs').appendFileSync('log.txt', require('util').inspect(x) + '\n');
+
 /** @enum {number} */
 const Event = {
   Begin: 0,
@@ -48,6 +51,10 @@ const parse = R.pipe(
  */
 
 /**
+ * @typedef {Object.<string, { trend: Array<number>, count: Object.<GuardState, number> }>} GuardStats
+ */
+
+/**
  * @typedef {Record<string, {id: number, log: MinuteLog[]}>} State
  */
 const getDay = R.pipe(
@@ -57,7 +64,7 @@ const getDay = R.pipe(
       R.pair,
       R.join('-')
     ),
-    [D.getMonth, D.getDay]
+    [D.getMonth, D.getDate]
   )
 );
 
@@ -105,28 +112,62 @@ const calculateTrend = R.pipe(
 );
 
 /**
+ * @param {State} x
+ * @returns {GuardStats}
+ */
+const calculateGuardStats = R.pipe(
+  R.values,
+  R.groupBy(R.propOr('N/A', 'id')),
+  R.map(R.converge(R.mergeDeepLeft, [calculateCounts, calculateTrend]))
+);
+
+const getSortedLog = R.pipe(
+  R.map(parse),
+  R.sortBy(x => x[0])
+);
+
+const getMostAsleep = R.pipe(
+  R.toPairs,
+  R.sortBy(R.pathOr(0, [1, 'count', 'asleep'])),
+  R.last
+);
+
+const getMinuteMostAsleep = R.pipe(
+  R.prop('trend'),
+  arr => arr.indexOf(Math.max(...arr))
+);
+
+/**
  * @param {string[]} input
  * @returns {number}
  */
 exports.standard = R.pipe(
-  R.map(parse),
-  R.sortBy(x => x[0]),
+  getSortedLog,
   calculateMinuteLogs,
-  R.values,
-  R.groupBy(R.propOr('N/A', 'id')),
-  R.map(R.converge(R.mergeLeft, [calculateCounts, calculateTrend])),
-  R.toPairs,
-  R.sortBy(R.path([1, 'count', 'asleep'])),
-  R.last,
-  R.adjust(
-    1,
-    R.pipe(
-      R.prop('trend'),
-      arr => arr.indexOf(Math.max(...arr))
-    )
-  ),
+  calculateGuardStats,
+  getMostAsleep,
+  R.adjust(1, getMinuteMostAsleep),
   R.map(parseInt),
   R.apply(R.multiply)
 );
 
-exports.plus = () => {};
+const getMostConsistentlyAsleep = R.pipe(
+  R.toPairs,
+  R.sortBy(
+    R.pipe(
+      R.path([1, 'trend']),
+      R.apply(Math.max)
+    )
+  ),
+  R.last
+);
+
+exports.plus = R.pipe(
+  getSortedLog,
+  calculateMinuteLogs,
+  calculateGuardStats,
+  getMostConsistentlyAsleep,
+  R.adjust(1, getMinuteMostAsleep),
+  R.map(parseInt),
+  R.apply(R.multiply)
+);
