@@ -1,9 +1,9 @@
-const fs = require('fs').promises
-const { EOL } = require('os')
+const fs = require('fs').promises;
+const { EOL } = require('os');
 
-exports.getInput = async filename => {
-  const input = await fs.readFile(__dirname + '/' + filename, {
+exports.getInput = async dirname => {
+  const input = await fs.readFile(dirname + '/input.txt', {
     encoding: 'utf8'
-  })
-  return input.split(EOL)
-}
+  });
+  return input.split(EOL);
+};

@@ -1,8 +1,8 @@
-const { getInput } = require("./util");
-const { standard, plus } = require("./4-repose");
+const { getInput } = require('../util');
+const { standard, plus } = require('.');
 
-describe("standard", () => {
-  test("counts intersecting points", () => {
+describe('standard', () => {
+  test('counts intersecting points', () => {
     const input = `
 [1518-11-01 00:00] Guard #10 begins shift
 [1518-11-01 00:05] falls asleep
@@ -23,19 +23,17 @@ describe("standard", () => {
 [1518-11-05 00:55] wakes up
     `
       .trim()
-      .split("\n");
+      .split('\n');
     expect(standard(input)).toBe(240);
   });
 
-  test("solves puzzle", async () => {
-    expect(
-      standard(await getInput("4-repose.input.txt"))
-    ).toMatchInlineSnapshot(`138280`);
+  test('solves puzzle', async () => {
+    expect(standard(await getInput(__dirname))).toMatchInlineSnapshot(`138280`);
   });
 });
 
-describe("plus", () => {
-  test("finds non-overlapping", () => {
+describe('plus', () => {
+  test('finds non-overlapping', () => {
     const input = `
     [1518-11-01 00:00] Guard #10 begins shift
     [1518-11-01 00:05] falls asleep
@@ -56,13 +54,11 @@ describe("plus", () => {
     [1518-11-05 00:55] wakes up
         `
       .trim()
-      .split("\n");
+      .split('\n');
     expect(plus(input)).toBe(4455);
   });
 
-  test("solves puzzle", async () => {
-    expect(plus(await getInput("4-repose.input.txt"))).toMatchInlineSnapshot(
-      `89347`
-    );
+  test('solves puzzle', async () => {
+    expect(plus(await getInput(__dirname))).toMatchInlineSnapshot(`89347`);
   });
 });

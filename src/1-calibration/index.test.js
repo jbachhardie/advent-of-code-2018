@@ -1,8 +1,8 @@
-const fs = require("fs").promises;
-const { EOL } = require("os");
-const { standard, plus } = require("./1-chronal-calibration");
+const fs = require('fs').promises;
+const { EOL } = require('os');
+const { standard, plus } = require('.');
 
-describe("standard", () => {
+describe('standard', () => {
   test.each`
     changes         | expected
     ${[0, 1]}       | ${1}
@@ -12,22 +12,21 @@ describe("standard", () => {
     ${[1, 1, 1]}    | ${3}
     ${[1, 1, -2]}   | ${0}
     ${[-1, -2, -3]} | ${-6}
-  `("returns $expected when $changes are applied", ({ changes, expected }) => {
+  `('returns $expected when $changes are applied', ({ changes, expected }) => {
     expect(standard(changes)).toBe(expected);
   });
 
-  test("solve puzzle", async () => {
-    const input = await fs.readFile(
-      __dirname + "/1-chronal-calibration.input.txt",
-      { encoding: "utf8" }
-    );
+  test('solve puzzle', async () => {
+    const input = await fs.readFile(__dirname + '/input.txt', {
+      encoding: 'utf8'
+    });
     expect(
       standard(input.split(EOL).map(x => parseInt(x, 10)))
     ).toMatchInlineSnapshot(`408`);
   });
 });
 
-describe("plus", () => {
+describe('plus', () => {
   test.each`
     changes               | expected
     ${[1, -2, 3, 1]}      | ${2}
@@ -35,15 +34,14 @@ describe("plus", () => {
     ${[3, 3, 4, -2, -4]}  | ${10}
     ${[-6, 3, 8, 5, -6]}  | ${5}
     ${[7, 7, -2, -7, -4]} | ${14}
-  `("sees $expected twice first for $changes", ({ changes, expected }) => {
+  `('sees $expected twice first for $changes', ({ changes, expected }) => {
     expect(plus(changes)).toBe(expected);
   });
 
-  test("solve puzzle", async () => {
-    const input = await fs.readFile(
-      __dirname + "/1-chronal-calibration.input.txt",
-      { encoding: "utf8" }
-    );
+  test('solve puzzle', async () => {
+    const input = await fs.readFile(__dirname + '/input.txt', {
+      encoding: 'utf8'
+    });
     expect(
       plus(input.split(EOL).map(x => parseInt(x, 10)))
     ).toMatchInlineSnapshot(`55250`);
